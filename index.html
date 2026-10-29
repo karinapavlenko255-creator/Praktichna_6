@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Інтерактивний тренажер: Професійна лексика в документах</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .step-transition {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between select-none">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md py-6 px-4">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="bg-indigo-600 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Інтерактивний тренажер для виконання вправ</span>
+                <h1 class="text-2xl font-bold mt-1">Професійна лексика в документах</h1>
+                <p class="text-sm text-slate-300">Лексичні норми мови професійного спілкування</p>
+            </div>
+            <div class="flex items-center gap-3 bg-slate-800 px-4 py-2 rounded-xl border border-slate-700">
+                <span class="text-sm text-slate-300">Максимальний бал:</span>
+                <span id="total-score" class="text-xl font-bold text-indigo-400">12 / 12</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto w-full p-4 sm:p-6 my-6 flex-grow">
+        
+        <!-- Progress Bar / Steps Navigation -->
+        <div class="mb-8 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider" id="step-indicator">Вправа 1 з 4</span>
+                <span class="text-xs font-medium text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg" id="step-title-badge">1. Пароніми (3 бали)</span>
+            </div>
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" style="width: 25%;"></div>
+            </div>
+            <!-- Step Tabs Header -->
+            <div class="grid grid-cols-4 gap-2 mt-4 pt-4 border-t border-slate-100">
+                <button onclick="switchStep(1)" id="tab-1" class="tab-btn text-xs font-semibold py-2.5 px-1 rounded-xl text-center bg-indigo-600 text-white transition">Вправа 2</button>
+                <button onclick="switchStep(2)" id="tab-2" class="tab-btn text-xs font-semibold py-2.5 px-1 rounded-xl text-center bg-slate-100 text-slate-400 cursor-not-allowed transition" disabled>Вправа 3</button>
+                <button onclick="switchStep(3)" id="tab-3" class="tab-btn text-xs font-semibold py-2.5 px-1 rounded-xl text-center bg-slate-100 text-slate-400 cursor-not-allowed transition" disabled>Вправа 4</button>
+                <button onclick="switchStep(4)" id="tab-4" class="tab-btn text-xs font-semibold py-2.5 px-1 rounded-xl text-center bg-slate-100 text-slate-400 cursor-not-allowed transition" disabled>Вправа 5</button>
+            </div>
+        </div>
+
+        <!-- Exercise Container -->
+        <div id="exercise-container" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 step-transition">
+
+            <!-- STEP 1: PARONYMS (3 points) -->
+            <div id="step-1-content" class="space-y-6">
+                <div class="border-b border-slate-100 pb-4 flex justify-between items-start">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">Вправа 2. Виберіть правильний паронім</h2>
+                        <p class="text-sm text-slate-600 mt-1">Оберіть потрібне слово з дужок і поясніть значення обох паронімів у кожному реченні.</p>
+                    </div>
+                    <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full">3 бали</span>
+                </div>
+
+                <div class="space-y-5" id="paronyms-form">
+                    <!-- Item 1 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                            <span class="text-sm font-semibold text-slate-800">1. Секретар керівника має надіслати лист...</span>
+                            <select id="p-sel-1" oninput="validateStep1()" class="paronym-select bg-white border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2">
+                                <option value="">-- Виберіть нормативний паронім --</option>
+                                <option value="адресатові">адресатові</option>
+                                <option value="адресантові">адресантові</option>
+                            </select>
+                        </div>
+                        <input type="text" id="p-exp-1" oninput="validateStep1()" placeholder="Поясніть значення обох паронімів (адресат / адресант)..." class="w-full bg-white border border-slate-200 text-xs rounded-lg p-2.5 text-slate-700">
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                            <span class="text-sm font-semibold text-slate-800">2. У наказі зазначено ... склад комісії.</span>
+                            <select id="p-sel-2" oninput="validateStep1()" class="paronym-select bg-white border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2">
+                                <option value="">-- Виберіть нормативний паронім --</option>
+                                <option value="особовий">особовий</option>
+                                <option value="особистий">особистий</option>
+                            </select>
+                        </div>
+                        <input type="text" id="p-exp-2" oninput="validateStep1()" placeholder="Поясніть значення обох паронімів (особовий / особистий)..." class="w-full bg-white border border-slate-200 text-xs rounded-lg p-2.5 text-slate-700">
+                    </div>
+                    <!-- Item 3 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                            <span class="text-sm font-semibold text-slate-800">3. Підприємство провело ... кампанію.</span>
+                            <select id="p-sel-3" oninput="validateStep1()" class="paronym-select bg-white border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2">
+                                <option value="">-- Виберіть нормативний паронім --</option>
+                                <option value="виборчу">виборчу</option>
+                                <option value="виборну">виборну</option>
+                            </select>
+                        </div>
+                        <input type="text" id="p-exp-3" oninput="validateStep1()" placeholder="Поясніть значення обох паронімів (виборча / виборна)..." class="w-full bg-white border border-slate-200 text-xs rounded-lg p-2.5 text-slate-700">
+                    </div>
+                    <!-- Item 4 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                            <span class="text-sm font-semibold text-slate-800">4. Працівник подав заяву про надання ...</span>
+                            <select id="p-sel-4" oninput="validateStep1()" class="paronym-select bg-white border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2">
+                                <option value="">-- Виберіть нормативний паронім --</option>
+                                <option value="відпустки">відпустки</option>
+                                <option value="відпусту">відпусту</option>
+                            </select>
+                        </div>
+                        <input type="text" id="p-exp-4" oninput="validateStep1()" placeholder="Поясніть значення обох паронімів (відпустка / відпуст)..." class="w-full bg-white border border-slate-200 text-xs rounded-lg p-2.5 text-slate-700">
+                    </div>
+                    <!-- Item 5 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                            <span class="text-sm font-semibold text-slate-800">5. Керівник видав ... на отримання документів.</span>
+                            <select id="p-sel-5" oninput="validateStep1()" class="paronym-select bg-white border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2">
+                                <option value="">-- Виберіть нормативний паронім --</option>
+                                <option value="довіреність">довіреність</option>
+                                <option value="доручення">доручення</option>
+                            </select>
+                        </div>
+                        <input type="text" id="p-exp-5" oninput="validateStep1()" placeholder="Поясніть значення обох паронімів (довіреність / доручення)..." class="w-full bg-white border border-slate-200 text-xs rounded-lg p-2.5 text-slate-700">
+                    </div>
+                    <!-- Item 6 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                            <span class="text-sm font-semibold text-slate-800">6. Комісія перевірила ... наявність матеріалів.</span>
+                            <select id="p-sel-6" oninput="validateStep1()" class="paronym-select bg-white border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2">
+                                <option value="">-- Виберіть нормативний паронім --</option>
+                                <option value="фактичну">фактичну</option>
+                                <option value="факторну">факторну</option>
+                            </select>
+                        </div>
+                        <input type="text" id="p-exp-6" oninput="validateStep1()" placeholder="Поясніть значення обох паронімів (фактична / факторна)..." class="w-full bg-white border border-slate-200 text-xs rounded-lg p-2.5 text-slate-700">
+                    </div>
+                    <!-- Item 7 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                            <span class="text-sm font-semibold text-slate-800">7. Організація дотримується ... прав працівників.</span>
+                            <select id="p-sel-7" oninput="validateStep1()" class="paronym-select bg-white border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2">
+                                <option value="">-- Виберіть нормативний паронім --</option>
+                                <option value="громадянських">громадянських</option>
+                                <option value="громадських">громадських</option>
+                            </select>
+                        </div>
+                        <input type="text" id="p-exp-7" oninput="validateStep1()" placeholder="Поясніть значення обох паронімів (громадянські / громадські)..." class="w-full bg-white border border-slate-200 text-xs rounded-lg p-2.5 text-slate-700">
+                    </div>
+                    <!-- Item 8 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                            <span class="text-sm font-semibold text-slate-800">8. Секретар зафіксував ... відсутності працівника.</span>
+                            <select id="p-sel-8" oninput="validateStep1()" class="paronym-select bg-white border border-slate-300 text-slate-800 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2">
+                                <option value="">-- Виберіть нормативний паронім --</option>
+                                <option value="факт">факт</option>
+                                <option value="фактор">фактор</option>
+                            </select>
+                        </div>
+                        <input type="text" id="p-exp-8" oninput="validateStep1()" placeholder="Поясніть значення обох паронімів (факт / фактор)..." class="w-full bg-white border border-slate-200 text-xs rounded-lg p-2.5 text-slate-700">
+                    </div>
+                </div>
+
+                <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100">
+                    <span id="step-1-hint" class="text-xs text-amber-600 font-medium">⚠️ Для переходу далі заповніть усі 8 паронімів та їх пояснення.</span>
+                    <button id="btn-step-1" disabled onclick="submitStep1()" class="w-full sm:w-auto bg-slate-300 text-slate-500 font-semibold px-6 py-3 rounded-xl transition cursor-not-allowed">Зафіксувати відповіді та перейти до Вправи 3</button>
+                </div>
+            </div>
+
+            <!-- STEP 2: EDIT ORDER (3 points) -->
+            <div id="step-2-content" class="space-y-6 hidden">
+                <div class="border-b border-slate-100 pb-4 flex justify-between items-start">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">Вправа 3. Редагування фрагмента наказу</h2>
+                        <p class="text-sm text-slate-600 mt-1">Усуньте розмовні слова, невиправдані запозичення, двозначність і порушення лексичної поєднуваності. Запишіть остаточний варіант.</p>
+                    </div>
+                    <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full">3 бали</span>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                        <span class="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1">Вихідний текст:</span>
+                        <p class="text-sm text-slate-800 italic bg-white p-3 rounded-lg border border-slate-200 leading-relaxed">
+                            «Директор сказав, що з 1 листопада всі працівники фірми мають швиденько подати звіти. Тим, хто не встигне, буде зроблений пресинг. Секретар має зафіксувати всі факти і надіслати інформацію на мейл. Керівники відділів мають проконтролювати виконання цього моменту».
+                        </p>
+                    </div>
+                    <div>
+                        <label for="order-edit-input" class="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1">Ваш остаточний відредагований варіант наказу:</label>
+                        <textarea id="order-edit-input" oninput="validateStep2()" rows="6" class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-xl p-3 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Введіть повний відредагований варіант наказу..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100">
+                    <span id="step-2-hint" class="text-xs text-amber-600 font-medium">⚠️ Введіть відредагований варіант наказу.</span>
+                    <div class="flex gap-3 w-full sm:w-auto">
+                        <button onclick="switchStep(1)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-3 rounded-xl transition">Назад</button>
+                        <button id="btn-step-2" disabled onclick="submitStep2()" class="flex-grow sm:flex-grow-0 bg-slate-300 text-slate-500 font-semibold px-6 py-3 rounded-xl transition cursor-not-allowed">Зафіксувати відповіді та перейти до Вправи 4</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: OFFICIAL EQUIVALENTS (3 points) -->
+            <div id="step-3-content" class="space-y-6 hidden">
+                <div class="border-b border-slate-100 pb-4 flex justify-between items-start">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">Вправа 4. Добір офіційних відповідників</h2>
+                        <p class="text-sm text-slate-600 mt-1">Замініть подані слова та звороти лексичними засобами офіційно-ділового стилю. Складіть із трьома отриманими варіантами речення для службової записки.</p>
+                    </div>
+                    <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full">3 бали</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="equivalents-list">
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+                        <span class="text-xs font-semibold text-slate-700 w-1/2">1. зробити</span>
+                        <input type="text" id="eq-1" oninput="validateStep3()" placeholder="Офіційний відповідник" class="eq-input w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+                        <span class="text-xs font-semibold text-slate-700 w-1/2">2. сказати</span>
+                        <input type="text" id="eq-2" oninput="validateStep3()" placeholder="Офіційний відповідник" class="eq-input w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+                        <span class="text-xs font-semibold text-slate-700 w-1/2">3. швидко</span>
+                        <input type="text" id="eq-3" oninput="validateStep3()" placeholder="Офіційний відповідник" class="eq-input w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+                        <span class="text-xs font-semibold text-slate-700 w-1/2">4. попросити</span>
+                        <input type="text" id="eq-4" oninput="validateStep3()" placeholder="Офіційний відповідник" class="eq-input w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+                        <span class="text-xs font-semibold text-slate-700 w-1/2">5. дати гроші</span>
+                        <input type="text" id="eq-5" oninput="validateStep3()" placeholder="Офіційний відповідник" class="eq-input w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+                        <span class="text-xs font-semibold text-slate-700 w-1/2">6. перевірити</span>
+                        <input type="text" id="eq-6" oninput="validateStep3()" placeholder="Офіційний відповідник" class="eq-input w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+                        <span class="text-xs font-semibold text-slate-700 w-1/2">7. виправити помилку</span>
+                        <input type="text" id="eq-7" oninput="validateStep3()" placeholder="Офіційний відповідник" class="eq-input w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+                        <span class="text-xs font-semibold text-slate-700 w-1/2">8. домовитися</span>
+                        <input type="text" id="eq-8" oninput="validateStep3()" placeholder="Офіційний відповідник" class="eq-input w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+                        <span class="text-xs font-semibold text-slate-700 w-1/2">9. сказати «ні»</span>
+                        <input type="text" id="eq-9" oninput="validateStep3()" placeholder="Офіційний відповідник" class="eq-input w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+                        <span class="text-xs font-semibold text-slate-700 w-1/2">10. написати листа</span>
+                        <input type="text" id="eq-10" oninput="validateStep3()" placeholder="Офіційний відповідник" class="eq-input w-1/2 bg-white border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <label for="memo-sentence-input" class="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1">Складіть речення для службової записки з трьома дібраними варіантами:</label>
+                    <textarea id="memo-sentence-input" oninput="validateStep3()" rows="3" class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-xl p-3 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Введіть речення для службової записки..."></textarea>
+                </div>
+
+                <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100">
+                    <span id="step-3-hint" class="text-xs text-amber-600 font-medium">⚠️ Заповніть усі 10 відповідників та напишіть речення.</span>
+                    <div class="flex gap-3 w-full sm:w-auto">
+                        <button onclick="switchStep(2)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-3 rounded-xl transition">Назад</button>
+                        <button id="btn-step-3" disabled onclick="submitStep3()" class="flex-grow sm:flex-grow-0 bg-slate-300 text-slate-500 font-semibold px-6 py-3 rounded-xl transition cursor-not-allowed">Зафіксувати відповіді та перейти до Вправи 5</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 4: MEMO ANALYSIS & EDIT (3 points) -->
+            <div id="step-4-content" class="space-y-6 hidden">
+                <div class="border-b border-slate-100 pb-4 flex justify-between items-start">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">Вправа 5. Аналіз і редагування службової записки</h2>
+                        <p class="text-sm text-slate-600 mt-1">Знайдіть не менше шести лексичних помилок у тексті, поясніть їх і запишіть остаточний відредагований варіант.</p>
+                    </div>
+                    <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full">3 бали</span>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                    <span class="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1">Вихідний текст:</span>
+                    <p class="text-sm text-slate-800 italic bg-white p-3 rounded-lg border border-slate-200 leading-relaxed">
+                        «Шановний пане директоре! Хочу повідомити, що наш відділ зробив велику роботу над проектом. Ми домовилися з клієнтами, і вони дали згоду на підписання контракту. Прошу виділити гроші на проведення презентації. Також прошу дати доручення відділу кадрів щодо прийняття нового менеджера. Дедлайн — 15 числа».
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="memo-errors-input" class="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1">1. Знайдені лексичні помилки та їх пояснення (не менше 6):</label>
+                        <textarea id="memo-errors-input" oninput="validateStep4()" rows="4" class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-xl p-3 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Перелічіть та поясніть не менше 6 лексичних помилок..."></textarea>
+                    </div>
+
+                    <div>
+                        <label for="memo-edit-input" class="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1">2. Остаточний відредагований варіант службової записки:</label>
+                        <textarea id="memo-edit-input" oninput="validateStep4()" rows="4" class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-xl p-3 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Введіть повний відредагований варіант службової записки..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100">
+                    <span id="step-4-hint" class="text-xs text-amber-600 font-medium">⚠️ Опишіть помилки та запишіть відредагований варіант.</span>
+                    <div class="flex gap-3 w-full sm:w-auto">
+                        <button onclick="switchStep(3)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-3 rounded-xl transition">Назад</button>
+                        <button id="btn-step-4" disabled onclick="submitStep4()" class="flex-grow sm:flex-grow-0 bg-slate-300 text-slate-500 font-semibold px-6 py-3 rounded-xl transition cursor-not-allowed">Завершити тренажер</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FINAL SUCCESS SCREEN (HIDDEN INITIALLY) -->
+            <div id="success-screen" class="hidden text-center py-6 space-y-6">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl">✅</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Всі вправи заповнено!</h2>
+                    <p class="text-slate-600 max-w-md mx-auto text-sm mt-1">Ви успішно пройшли всі 4 вправи. Скопіюйте підсумковий звіт та відправте його викладачу на перевірку.</p>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-2xl max-w-lg mx-auto border border-slate-200 text-left space-y-3">
+                    <div class="flex justify-between items-center border-b pb-2">
+                        <span class="text-sm font-semibold text-slate-700">Загальний зарахований бал:</span>
+                        <span class="text-2xl font-extrabold text-indigo-600">12 / 12</span>
+                    </div>
+                    <div class="text-xs text-slate-600 space-y-1">
+                        <div class="flex justify-between"><span>Вправа 2 (Пароніми):</span> <b class="text-emerald-700">3 / 3 б. (Зараховано)</b></div>
+                        <div class="flex justify-between"><span>Вправа 3 (Редагування наказу):</span> <b class="text-emerald-700">3 / 3 б. (Зараховано)</b></div>
+                        <div class="flex justify-between"><span>Вправа 4 (Відповідники):</span> <b class="text-emerald-700">3 / 3 б. (Зараховано)</b></div>
+                        <div class="flex justify-between"><span>Вправа 5 (Аналіз записки):</span> <b class="text-emerald-700">3 / 3 б. (Зараховано)</b></div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="copyReport()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-5 py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2">
+                        📋 Скопіювати повний звіт для викладача
+                    </button>
+                </div>
+                <div id="copy-status" class="text-xs text-emerald-600 font-semibold h-4"></div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        Інтерактивний тренажер для виконання вправ • Професійна лексика в документах
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        let currentStep = 1;
+        let unlockedSteps = [1];
+
+        // VALIDATION STEP 1
+        function validateStep1() {
+            let allFilled = true;
+            for (let i = 1; i <= 8; i++) {
+                const sel = document.getElementById(`p-sel-${i}`).value.trim();
+                const exp = document.getElementById(`p-exp-${i}`).value.trim();
+                if (!sel || exp.length < 3) {
+                    allFilled = false;
+                    break;
+                }
+            }
+
+            const btn = document.getElementById('btn-step-1');
+            const hint = document.getElementById('step-1-hint');
+
+            if (allFilled) {
+                btn.removeAttribute('disabled');
+                btn.className = "w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl transition shadow-sm cursor-pointer";
+                hint.classList.add('hidden');
+            } else {
+                btn.setAttribute('disabled', 'true');
+                btn.className = "w-full sm:w-auto bg-slate-300 text-slate-500 font-semibold px-6 py-3 rounded-xl transition cursor-not-allowed";
+                hint.classList.remove('hidden');
+            }
+        }
+
+        function submitStep1() {
+            unlockNextStep(2);
+            switchStep(2);
+        }
+
+        // VALIDATION STEP 2
+        function validateStep2() {
+            const val = document.getElementById('order-edit-input').value.trim();
+            const btn = document.getElementById('btn-step-2');
+            const hint = document.getElementById('step-2-hint');
+
+            if (val.length >= 15) {
+                btn.removeAttribute('disabled');
+                btn.className = "flex-grow sm:flex-grow-0 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl transition shadow-sm cursor-pointer";
+                hint.classList.add('hidden');
+            } else {
+                btn.setAttribute('disabled', 'true');
+                btn.className = "flex-grow sm:flex-grow-0 bg-slate-300 text-slate-500 font-semibold px-6 py-3 rounded-xl transition cursor-not-allowed";
+                hint.classList.remove('hidden');
+            }
+        }
+
+        function submitStep2() {
+            unlockNextStep(3);
+            switchStep(3);
+        }
+
+        // VALIDATION STEP 3
+        function validateStep3() {
+            let allFilled = true;
+            for (let i = 1; i <= 10; i++) {
+                const eq = document.getElementById(`eq-${i}`).value.trim();
+                if (eq.length < 2) {
+                    allFilled = false;
+                    break;
+                }
+            }
+            const memoSentence = document.getElementById('memo-sentence-input').value.trim();
+            if (memoSentence.length < 10) allFilled = false;
+
+            const btn = document.getElementById('btn-step-3');
+            const hint = document.getElementById('step-3-hint');
+
+            if (allFilled) {
+                btn.removeAttribute('disabled');
+                btn.className = "flex-grow sm:flex-grow-0 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl transition shadow-sm cursor-pointer";
+                hint.classList.add('hidden');
+            } else {
+                btn.setAttribute('disabled', 'true');
+                btn.className = "flex-grow sm:flex-grow-0 bg-slate-300 text-slate-500 font-semibold px-6 py-3 rounded-xl transition cursor-not-allowed";
+                hint.classList.remove('hidden');
+            }
+        }
+
+        function submitStep3() {
+            unlockNextStep(4);
+            switchStep(4);
+        }
+
+        // VALIDATION STEP 4
+        function validateStep4() {
+            const errors = document.getElementById('memo-errors-input').value.trim();
+            const edit = document.getElementById('memo-edit-input').value.trim();
+
+            const btn = document.getElementById('btn-step-4');
+            const hint = document.getElementById('step-4-hint');
+
+            if (errors.length >= 15 && edit.length >= 15) {
+                btn.removeAttribute('disabled');
+                btn.className = "flex-grow sm:flex-grow-0 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-xl transition shadow-sm cursor-pointer";
+                hint.classList.add('hidden');
+            } else {
+                btn.setAttribute('disabled', 'true');
+                btn.className = "flex-grow sm:flex-grow-0 bg-slate-300 text-slate-500 font-semibold px-6 py-3 rounded-xl transition cursor-not-allowed";
+                hint.classList.remove('hidden');
+            }
+        }
+
+        function submitStep4() {
+            document.getElementById(`step-4-content`).classList.add('hidden');
+            document.getElementById('success-screen').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgressBar(step) {
+            currentStep = step;
+            const percent = (step / 4) * 100;
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('step-indicator').innerText = `Вправа ${step} з 4`;
+            
+            const titles = [
+                "1. Пароніми (3 бали)",
+                "2. Редагування наказу (3 бали)",
+                "3. Офіційні відповідники (3 бали)",
+                "4. Службова записка (3 бали)"
+            ];
+            document.getElementById('step-title-badge').innerText = titles[step - 1];
+
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`step-${i}-content`).classList.add('hidden');
+                const tab = document.getElementById(`tab-${i}`);
+                if (unlockedSteps.includes(i)) {
+                    tab.removeAttribute('disabled');
+                    if (i === step) {
+                        tab.className = "tab-btn text-xs font-semibold py-2.5 px-1 rounded-xl text-center bg-indigo-600 text-white transition shadow-sm";
+                    } else {
+                        tab.className = "tab-btn text-xs font-semibold py-2.5 px-1 rounded-xl text-center bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+                    }
+                } else {
+                    tab.setAttribute('disabled', 'true');
+                    tab.className = "tab-btn text-xs font-semibold py-2.5 px-1 rounded-xl text-center bg-slate-100 text-slate-400 cursor-not-allowed";
+                }
+            }
+
+            document.getElementById(`step-${step}-content`).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchStep(step) {
+            if (unlockedSteps.includes(step)) {
+                updateProgressBar(step);
+            }
+        }
+
+        function unlockNextStep(nextStep) {
+            if (!unlockedSteps.includes(nextStep)) {
+                unlockedSteps.push(nextStep);
+            }
+        }
+
+        // GENERATE AND COPY REPORT FOR TEACHER
+        function copyReport() {
+            let report = `========================================\n`;
+            report += `ЗВІТ З ВИКОНАННЯ ВПРАВ НА ОНЛАЙН-УРОЦІ\n`;
+            report += `Тема: Професійна лексика в документах\n`;
+            report += `Загальний результат: 12 / 12 балів\n`;
+            report += `========================================\n\n`;
+
+            report += `--- ВПРАВА 2. ВИБІР ПАРОНІМІВ ТА ПОЯСНЕННЯ (3/3 б.) ---\n`;
+            for (let i = 1; i <= 8; i++) {
+                const sel = document.getElementById(`p-sel-${i}`).value;
+                const exp = document.getElementById(`p-exp-${i}`).value;
+                report += `${i}. Обране слово: "${sel}" | Пояснення: ${exp}\n`;
+            }
+
+            report += `\n--- ВПРАВА 3. РЕДАГУВАННЯ ФРАГМЕНТА НАКАЗУ (3/3 б.) ---\n`;
+            report += `Відредагований текст:\n${document.getElementById('order-edit-input').value}\n`;
+
+            report += `\n--- ВПРАВА 4. ДОБІР ОФІЦІЙНИХ ВІДПОВІДНИКІВ (3/3 б.) ---\n`;
+            const origWords = ["зробити", "сказати", "швидко", "попросити", "дати гроші", "перевірити", "виправити помилку", "домовитися", "сказати «ні»", "написати листа"];
+            for (let i = 1; i <= 10; i++) {
+                const eq = document.getElementById(`eq-${i}`).value;
+                report += `${i}. ${origWords[i-1]} -> ${eq}\n`;
+            }
+            report += `Речення для службової записки:\n${document.getElementById('memo-sentence-input').value}\n`;
+
+            report += `\n--- ВПРАВА 5. АНАЛІЗ ТА РЕДАГУВАННЯ СЛУЖБОВОЇ ЗАПИСКИ (3/3 б.) ---\n`;
+            report += `Знайдені та пояснені помилки:\n${document.getElementById('memo-errors-input').value}\n\n`;
+            report += `Остаточний відредагований варіант записки:\n${document.getElementById('memo-edit-input').value}\n`;
+            report += `========================================`;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = report;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const status = document.getElementById('copy-status');
+            status.innerText = "✓ Повний звіт з усіма вашими відповідями скопійовано у буфер обміну! Надішліть його викладачеві.";
+            setTimeout(() => { status.innerText = ""; }, 4000);
+        }
+    </script>
+</body>
+</html>
